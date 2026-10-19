@@ -1,0 +1,21 @@
+name: Daily Horror Short
+on:
+  schedule:
+    - cron: '30 0 * * *'
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install libs
+        run: pip install google-generativeai requests python-telegram-bot
+      - name: Run bot
+        env:
+          GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: python bot.py
